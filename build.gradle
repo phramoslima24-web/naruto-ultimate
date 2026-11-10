@@ -1,0 +1,62 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+group = 'com.narutoto.ultimate'
+version = '0.1.0-alpha'
+archivesBaseName = 'narutoto-ultimate'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'debug'
+            mods { narutoto_ultimate { source sourceSets.main } }
+        }
+        client {}
+        server { args '--nogui' }
+    }
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+}
+
+processResources {
+    def replaceProperties = [
+        minecraft_version: '1.20.1',
+        forge_version: '47.2.0',
+        mod_id: 'narutoto_ultimate',
+        mod_name: 'Narutoto Ultimate RPG',
+        mod_version: project.version,
+        mod_authors: 'Narutoto Ultimate Team',
+        mod_description: 'Progression, missions, reputation and integrations for the Narutoto mod ecosystem.'
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title': 'narutoto_ultimate',
+            'Specification-Vendor': 'Narutoto Ultimate Team',
+            'Specification-Version': '1',
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.jar.archiveVersion,
+            'Implementation-Vendor': 'Narutoto Ultimate Team'
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
