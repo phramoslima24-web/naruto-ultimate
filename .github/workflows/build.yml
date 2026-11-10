@@ -1,3 +1,4 @@
+
 name: Build Narutoto Ultimate RPG
 
 on:
@@ -13,6 +14,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,12 +31,27 @@ jobs:
         with:
           gradle-version: '8.8'
 
+      - name: Detect project directory
+        id: project
+        run: |
+          if [ -f build.gradle ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          elif [ -f narutoto-ultimate/build.gradle ]; then
+            echo "dir=narutoto-ultimate" >> "$GITHUB_OUTPUT"
+          else
+            echo "Erro: build.gradle não encontrado"
+            exit 1
+          fi
+
       - name: Build mod
-        run: gradle --no-daemon clean build
+        run: |
+          gradle -p "${{ steps.project.outputs.dir }}" --no-daemon clean build
 
       - name: Upload compiled mod
         uses: actions/upload-artifact@v4
         with:
           name: narutoto-ultimate-0.5.0
-          path: build/libs/*[0-9].jar
+          path: |
+            **/build/libs/*.jar
+            !**/build/libs/*-sources.jar
           if-no-files-found: error
