@@ -136,3 +136,19 @@ Comandos:
 As missões ficam progressivamente mais difíceis. A última missão ANBU exige derrotar um chefe lendário (Wither ou Ender Dragon). Nas missões Kage, uma missão de chefe aparece a cada cinco missões. Cada missão entregue dá XP Ultimate e reputação conforme o rank.
 
 **Nota:** as missões desta versão usam monstros hostis do Minecraft como objetivos provisórios. A próxima evolução pode ligar os objetivos a NPCs, inimigos, Bijuu e sistemas específicos dos addons Narutoto.
+
+## Atualização 0.5.0-alpha — Kage e invasões
+
+- `/ultimate spawnkage KONOHA` cria o Minato Namikaze original do Narutoto 0.4.2.
+- `/ultimate spawnkage SUNA` cria o Gaara original do Narutoto 0.4.2.
+- As outras três vilas continuam usando o NPC genérico do gabinete para preservar o quadro de missões.
+- Os Kage são registrados com dados persistentes e podem reagir ao serem atacados.
+- Invasões raras usam os Missing Nin do Narutoto; cada grupo tem 5 ou 6 inimigos.
+- Os ninjas encontrados nas proximidades, identificados pelas tags de vila do Narutoto, recebem os invasores como alvos.
+- O sistema de missões e a campanha existentes foram mantidos.
+
+**Importante:** nesta versão, o comando `/ultimate spawnkage VILA` ainda precisa ser executado por um administrador dentro de cada vila. A geração automática dos prédios dos cinco gabinetes no momento da criação do mundo ainda não está implementada, porque o JAR do Narutoto não expõe uma API pública para localizar com segurança as coordenadas de cada vila já gerada. A invasão só pode acontecer perto de um Kage registrado. Não remova o mod base Narutoto 0.4.2.
+
+### GitHub Actions
+
+O workflow está em `.github/workflows/build.yml`. Envie o conteúdo desta pasta para a raiz do repositório; a compilação inicia ao enviar para `main`/`master` ou manualmente em **Actions → Build Narutoto Ultimate RPG → Run workflow**. Baixe o artefato `narutoto-ultimate-0.5.0` ao terminar.

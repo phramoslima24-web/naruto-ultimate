@@ -2,9 +2,9 @@ name: Build Narutoto Ultimate RPG
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 permissions:
@@ -13,7 +13,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,18 +22,19 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: gradle
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.1.1'
+          gradle-version: '8.8'
 
       - name: Build mod
-        run: gradle --no-daemon build
+        run: gradle --no-daemon clean build
 
       - name: Upload compiled mod
         uses: actions/upload-artifact@v4
         with:
-          name: narutoto-ultimate-jar
-          path: build/libs/*.jar
+          name: narutoto-ultimate-0.5.0
+          path: build/libs/*[0-9].jar
           if-no-files-found: error

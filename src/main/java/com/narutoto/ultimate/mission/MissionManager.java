@@ -4,9 +4,10 @@ import com.narutoto.ultimate.data.PlayerProfile;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import java.util.Locale;
@@ -36,26 +37,34 @@ public final class MissionManager {
 
     public static String[] villages() { return VILLAGES.clone(); }
 
-    public static Villager spawnKage(ServerPlayer player, String village) {
+    public static Entity spawnKage(ServerPlayer player, String village) {
         String normalized = village.toUpperCase(Locale.ROOT);
         if (!isVillage(normalized)) return null;
-        Villager npc = EntityType.VILLAGER.create(player.serverLevel());
+        // Use the real character entities shipped by Narutoto when available.
+        String entityId = switch (normalized) {
+            case "KONOHA" -> "narutoto:minato_npc";
+            case "SUNA" -> "narutoto:gaara_npc";
+            default -> "minecraft:villager";
+        };
+        EntityType<?> type = EntityType.byString(entityId).orElse(EntityType.VILLAGER);
+        Entity npc = type.create(player.serverLevel());
         if (npc == null) return null;
         npc.moveTo(player.getX() + 1.5D, player.getY(), player.getZ() + 0.5D, player.getYRot(), 0.0F);
-        npc.setCustomName(Component.literal(kageTitle(normalized) + " de " + normalized));
+        npc.setCustomName(Component.literal((normalized.equals("KONOHA") ? "Minato Namikaze - " : normalized.equals("SUNA") ? "Gaara - " : "") + kageTitle(normalized) + " de " + normalized));
         npc.setCustomNameVisible(true);
-        npc.setPersistenceRequired();
+        if (npc instanceof Mob mob) mob.setPersistenceRequired();
         npc.getPersistentData().putBoolean(NPC_TAG, true);
         npc.getPersistentData().putString("UltimateVillage", normalized);
+        npc.getPersistentData().putBoolean("UltimateKageAtOffice", true);
         player.serverLevel().addFreshEntity(npc);
         return npc;
     }
 
-    public static boolean isKageNpc(Villager villager) {
-        return villager.getPersistentData().getBoolean(NPC_TAG);
+    public static boolean isKageNpc(Entity entity) {
+        return entity.getPersistentData().getBoolean(NPC_TAG);
     }
 
-    public static void openBoard(ServerPlayer player, Villager npc) {
+    public static void openBoard(ServerPlayer player, Entity npc) {
         String village = npc.getPersistentData().getString("UltimateVillage");
         String playerVillage = PlayerProfile.getString(player, "Village");
         if (!isVillage(village)) {

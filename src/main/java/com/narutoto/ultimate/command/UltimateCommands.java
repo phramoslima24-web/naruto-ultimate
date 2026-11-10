@@ -109,7 +109,7 @@ public final class UltimateCommands {
             source.sendFailure(Component.literal("Não foi possível criar o NPC Kage."));
             return 0;
         }
-        source.sendSuccess(() -> Component.literal("NPC " + normalized + " criado. Coloque-o dentro do gabinete do Kage desta vila."), true);
+        source.sendSuccess(() -> Component.literal("Kage " + normalized + " criado. Posicione-o dentro do gabinete da vila."), true);
         return 1;
     }
 
