@@ -77,7 +77,7 @@ public final class MissionManager {
         PlayerProfile.setString(player, "KageAccessVillage", village);
         player.sendSystemMessage(Component.literal("§6§l=== GABINETE DO " + kageTitle(village).toUpperCase(Locale.ROOT) + " ==="));
         player.sendSystemMessage(Component.literal("§7" + kageTitle(village)
-            + ": "Tenho uma missão para você, shinobi. Cumpra-a e volte para receber sua recompensa.""));
+            + ": \"Tenho uma missão para você, shinobi. Cumpra-a e volte para receber sua recompensa.\""));
         showBoard(player);
     }
 

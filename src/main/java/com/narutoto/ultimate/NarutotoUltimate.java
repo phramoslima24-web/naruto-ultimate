@@ -4,7 +4,10 @@ import com.narutoto.ultimate.command.UltimateCommands;
 import com.narutoto.ultimate.campaign.CampaignManager;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import com.narutoto.ultimate.data.PlayerProfile;
-import com.narutoto.ultimate.integration.AddonDetector;\nimport com.narutoto.ultimate.mission.MissionManager;\nimport net.minecraft.world.entity.npc.Villager;\nimport net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import com.narutoto.ultimate.integration.AddonDetector;
+import com.narutoto.ultimate.mission.MissionManager;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -24,7 +27,8 @@ public class NarutotoUltimate {
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
         MinecraftForge.EVENT_BUS.addListener(this::onPlayerLogin);
         MinecraftForge.EVENT_BUS.addListener(this::onPlayerClone);
-        MinecraftForge.EVENT_BUS.addListener(this::onLivingDeath);\n        MinecraftForge.EVENT_BUS.addListener(this::onEntityInteract);
+        MinecraftForge.EVENT_BUS.addListener(this::onLivingDeath);
+        MinecraftForge.EVENT_BUS.addListener(this::onEntityInteract);
         LOGGER.info("Narutoto Ultimate RPG iniciado. Addons detectados: {}", AddonDetector.loadedSummary());
     }
 
