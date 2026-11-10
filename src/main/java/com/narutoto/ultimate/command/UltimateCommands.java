@@ -1,12 +1,15 @@
 package com.narutoto.ultimate.command;
 
+import com.narutoto.ultimate.campaign.CampaignManager;
 import com.narutoto.ultimate.data.PlayerProfile;
 import com.narutoto.ultimate.integration.AddonDetector;
+import com.narutoto.ultimate.mission.MissionManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,8 +25,21 @@ public final class UltimateCommands {
                 .then(Commands.argument("player", EntityArgument.player())
                     .requires(source -> source.hasPermission(2))
                     .executes(ctx -> showProfile(EntityArgument.getPlayer(ctx, "player")))))
-            .then(Commands.literal("addons")
-                .executes(ctx -> showAddons(ctx.getSource())))
+            .then(Commands.literal("addons").executes(ctx -> showAddons(ctx.getSource())))
+            .then(Commands.literal("campaign")
+                .executes(ctx -> showCampaign(ctx.getSource().getPlayerOrException()))
+                .then(Commands.literal("status").executes(ctx -> showCampaign(ctx.getSource().getPlayerOrException()))))
+            .then(Commands.literal("missions")
+                .executes(ctx -> showMissions(ctx.getSource().getPlayerOrException())))
+            .then(Commands.literal("aceitar")
+                .executes(ctx -> MissionManager.accept(ctx.getSource().getPlayerOrException())))
+            .then(Commands.literal("entregar")
+                .executes(ctx -> MissionManager.deliver(ctx.getSource().getPlayerOrException())))
+            .then(Commands.literal("spawnkage")
+                .requires(source -> source.hasPermission(2))
+                .then(Commands.argument("village", StringArgumentType.word())
+                    .suggests((ctx, builder) -> SharedSuggestionProvider.suggest(MissionManager.villages(), builder))
+                    .executes(ctx -> spawnKage(ctx.getSource(), StringArgumentType.getString(ctx, "village")))))
             .then(Commands.literal("setrank")
                 .requires(source -> source.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
@@ -65,6 +81,35 @@ public final class UltimateCommands {
 
     private static int showProfile(ServerPlayer player) {
         player.sendSystemMessage(Component.literal(PlayerProfile.summary(player)));
+        return 1;
+    }
+
+    private static int showCampaign(ServerPlayer player) {
+        player.sendSystemMessage(Component.literal(CampaignManager.status(player)));
+        return 1;
+    }
+
+    private static int showMissions(ServerPlayer player) {
+        MissionManager.showBoard(player);
+        return 1;
+    }
+
+    private static int spawnKage(CommandSourceStack source, String village) {
+        ServerPlayer player = source.getPlayer();
+        if (player == null) {
+            source.sendFailure(Component.literal("Este comando precisa ser executado por um jogador."));
+            return 0;
+        }
+        String normalized = village.toUpperCase();
+        if (!MissionManager.isVillage(normalized)) {
+            source.sendFailure(Component.literal("Vila inválida. Use KONOHA, SUNA, KIRI, IWA ou KUMO."));
+            return 0;
+        }
+        if (MissionManager.spawnKage(player, normalized) == null) {
+            source.sendFailure(Component.literal("Não foi possível criar o NPC Kage."));
+            return 0;
+        }
+        source.sendSuccess(() -> Component.literal("NPC " + normalized + " criado. Coloque-o dentro do gabinete do Kage desta vila."), true);
         return 1;
     }
 

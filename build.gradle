@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.narutoto.ultimate'
-version = '0.1.0-alpha'
+version = '0.3.0-alpha'
 archivesBaseName = 'narutoto-ultimate'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

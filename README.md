@@ -68,3 +68,71 @@ Os outros addons são opcionais nesta fase. O projeto detecta sua presença, mas
 5. Quando terminar com o sinal verde, abra a execução e baixe o artefato **narutoto-ultimate-jar** na seção **Artifacts**. Dentro dele estará o `.jar` compilado.
 
 Se a compilação falhar, abra a execução em **Actions**, copie o primeiro erro vermelho completo e envie aqui.
+
+
+## Campanha principal (v0.2.0-alpha)
+
+A campanha segue a progressão **Genin -> Chunin -> Jounin -> ANBU -> Kage**.
+O progresso fica salvo nos dados persistentes de cada jogador.
+
+Use `/ultimate campaign` para consultar o capítulo e os objetivos atuais.
+Monstros hostis derrotados por você concedem 10 XP Ultimate e 1 ponto de reputação.
+As promoções são automáticas quando os requisitos são cumpridos:
+
+| Promoção | Requisitos |
+|---|---|
+| Genin -> Chunin | 5 monstros derrotados e 50 XP Ultimate |
+| Chunin -> Jounin | 10 monstros derrotados na etapa e 150 XP acumulados |
+| Jounin -> ANBU | 20 monstros derrotados na etapa e 350 XP acumulados |
+| ANBU -> Kage | 30 monstros derrotados na etapa, 650 XP acumulados e derrotar Wither ou Ender Dragon |
+
+Ao virar ANBU, a organização do perfil muda para `ANBU`. Ao virar Kage, muda para `KAGE`.
+
+
+## Sistema de missões e gabinetes dos Kage (v0.3.0-alpha)
+
+A campanha agora avança por missões oficiais entregues ao Kage da vila. O jogador precisa falar com o NPC do gabinete para aceitar uma missão e voltar ao mesmo Kage para entregar a missão concluída.
+
+### Gabinetes das cinco grandes vilas
+
+Os NPCs são aldeões especiais com interação própria:
+- KONOHA: Hokage
+- SUNA: Kazekage
+- KIRI: Mizukage
+- IWA: Tsuchikage
+- KUMO: Raikage
+
+Um administrador deve ir até o gabinete da vila e executar `/ultimate spawnkage KONOHA` (troque pela vila desejada). O NPC aparece ao lado do administrador; mova-o para dentro do gabinete, se necessário. O addon fornece o NPC e a função de gabinete, mas não gera automaticamente a construção física do prédio.
+
+O primeiro Kage com quem um jogador sem vila conversar define a vila dele. Depois disso, só o Kage da vila correspondente entrega missões para esse jogador.
+
+### Como jogar
+
+1. O administrador cria o NPC do Kage dentro do gabinete da vila com `/ultimate spawnkage KONOHA`.
+2. O jogador conversa (botão direito) com o Kage.
+3. O Kage apresenta a próxima missão.
+4. O jogador usa `/ultimate aceitar`.
+5. Derrote os inimigos pedidos. A missão salva o progresso mesmo se o jogador sair do mundo.
+6. Volte ao gabinete e clique no Kage novamente.
+7. Use `/ultimate entregar` para receber XP, reputação e contar a missão para a promoção.
+
+Comandos:
+- `/ultimate missions` - consultar a missão atual e o progresso.
+- `/ultimate campaign` - ver a campanha.
+- `/ultimate aceitar` - aceitar a missão apresentada pelo Kage.
+- `/ultimate entregar` - entregar uma missão concluída ao Kage.
+- `/ultimate spawnkage KONOHA` - criar NPC de Konoha (requer OP); também aceita `SUNA`, `KIRI`, `IWA` e `KUMO`.
+
+### Quantidade de missões por rank
+
+| Rank | Missões necessárias para promoção |
+|---|---:|
+| Genin | 5 |
+| Chunin | 10 |
+| Jounin | 15 |
+| ANBU | 20 |
+| Kage | 25 para concluir a campanha final |
+
+As missões ficam progressivamente mais difíceis. A última missão ANBU exige derrotar um chefe lendário (Wither ou Ender Dragon). Nas missões Kage, uma missão de chefe aparece a cada cinco missões. Cada missão entregue dá XP Ultimate e reputação conforme o rank.
+
+**Nota:** as missões desta versão usam monstros hostis do Minecraft como objetivos provisórios. A próxima evolução pode ligar os objetivos a NPCs, inimigos, Bijuu e sistemas específicos dos addons Narutoto.
