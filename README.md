@@ -5,7 +5,7 @@ Addon independente para **Minecraft 1.20.1 + Forge 47.x**, criado para integrar 
 ## O que já está implementado
 
 - Mod Forge independente: `narutoto_ultimate`.
-- Dependência obrigatória do Narutoto base `0.4.2` ou superior.
+- Dependência obrigatória do Narutoto base `0.4.1` ou superior.
 - Detecção opcional dos addons: Clans, All Bijuu, Mangekyou, Akatsuki & ANBU, Ninja Wars, Rinnegan Paths, Rinne-Sharingan, Edo Tensei, Juubi e Narutolimit.
 - Perfil persistente por jogador: rank, vila, clã, organização, XP, reputação e missões concluídas.
 - Os dados do perfil ficam no NBT persistente do jogador e são copiados no evento de clone/renascimento.
@@ -33,13 +33,13 @@ Use palavras sem espaço nos argumentos. Exemplo: `/ultimate setvillage Steve KO
 3. Dê dois cliques em `build-windows.bat`.
 4. Na primeira execução, o script baixa Gradle 8.1.1. O Gradle/ForgeGradle também baixará as dependências necessárias, então é preciso ter internet.
 5. O JAR será gerado em `build/libs/narutoto-ultimate-0.1.0-alpha.jar`.
-6. Coloque esse JAR em `mods` junto com `narutoto-0.4.2-forge-1.20.1.jar` e Forge 1.20.1.
+6. Coloque esse JAR em `mods` junto com `narutoto-0.4.1-forge-1.20.1.jar` e Forge 1.20.1.
 
 ## Requisitos
 
 - Minecraft 1.20.1
 - Forge 47.x
-- Narutoto base 0.4.2 ou superior
+- Narutoto base 0.4.1 ou superior
 - Java 17 para compilar
 
 Os outros addons são opcionais nesta fase. O projeto detecta sua presença, mas ainda não chama classes internas deles; assim, não exige que todos estejam instalados nem cria dependências de compilação frágeis.
@@ -139,16 +139,21 @@ As missões ficam progressivamente mais difíceis. A última missão ANBU exige 
 
 ## Atualização 0.5.0-alpha — Kage e invasões
 
-- `/ultimate spawnkage KONOHA` cria o Minato Namikaze original do Narutoto 0.4.2.
-- `/ultimate spawnkage SUNA` cria o Gaara original do Narutoto 0.4.2.
+- `/ultimate spawnkage KONOHA` cria o Minato Namikaze original do Narutoto 0.4.1.
+- `/ultimate spawnkage SUNA` cria o Gaara original do Narutoto 0.4.1.
 - As outras três vilas continuam usando o NPC genérico do gabinete para preservar o quadro de missões.
 - Os Kage são registrados com dados persistentes e podem reagir ao serem atacados.
 - Invasões raras usam os Missing Nin do Narutoto; cada grupo tem 5 ou 6 inimigos.
 - Os ninjas encontrados nas proximidades, identificados pelas tags de vila do Narutoto, recebem os invasores como alvos.
 - O sistema de missões e a campanha existentes foram mantidos.
 
-**Importante:** nesta versão, o comando `/ultimate spawnkage VILA` ainda precisa ser executado por um administrador dentro de cada vila. A geração automática dos prédios dos cinco gabinetes no momento da criação do mundo ainda não está implementada, porque o JAR do Narutoto não expõe uma API pública para localizar com segurança as coordenadas de cada vila já gerada. A invasão só pode acontecer perto de um Kage registrado. Não remova o mod base Narutoto 0.4.2.
+**Importante:** nesta versão, o comando `/ultimate spawnkage VILA` ainda precisa ser executado por um administrador dentro de cada vila. A geração automática dos prédios dos cinco gabinetes no momento da criação do mundo ainda não está implementada, porque o JAR do Narutoto não expõe uma API pública para localizar com segurança as coordenadas de cada vila já gerada. A invasão só pode acontecer perto de um Kage registrado. Não remova o mod base Narutoto 0.4.1.
 
 ### GitHub Actions
 
 O workflow está em `.github/workflows/build.yml`. Envie o conteúdo desta pasta para a raiz do repositório; a compilação inicia ao enviar para `main`/`master` ou manualmente em **Actions → Build Narutoto Ultimate RPG → Run workflow**. Baixe o artefato `narutoto-ultimate-0.5.0` ao terminar.
+
+
+## Compatibilidade adaptada
+
+Esta edição foi ajustada para declarar dependência do Narutoto base 0.4.1 (Minecraft 1.20.1) e usar Forge 47.4.10 no ambiente de compilação. Os IDs de entidades Minato, Gaara e Missing Nin usados pelo código foram encontrados no JAR Narutoto 0.4.1 fornecido. Ainda é necessário compilar e testar no jogo para confirmar o funcionamento em execução.
